@@ -15,7 +15,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<MyEshopDbContext>(options =>
+builder.Services.AddDbContext<MyDbContext>(options =>
         options.UseMySQL(builder.Configuration.GetConnectionString("MyConn")));
 builder.Services.AddScoped<IForecast, Forecast>();
 var app = builder.Build();

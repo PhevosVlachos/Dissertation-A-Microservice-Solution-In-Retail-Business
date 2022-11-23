@@ -12,8 +12,8 @@ namespace MVC_Solutions_In_Retail.Services
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
 
-        private MyEshopDbContext _context;
-        public Forecast(MyEshopDbContext context)
+        private MyDbContext _context;
+        public Forecast(MyDbContext context)
         {
             _context = context;
         }

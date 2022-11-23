@@ -5,10 +5,10 @@ namespace MVC_Solutions_In_Retail.Data
 {
 
 
-    public class MyEshopDbContext :  DbContext
+    public class MyDbContext :  DbContext
     {
         public DbSet<WeatherForecast> WeatherForecasts { get; set; }
 
-        public MyEshopDbContext(DbContextOptions<MyEshopDbContext> options) : base(options)
+        public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
         { }
     }}
