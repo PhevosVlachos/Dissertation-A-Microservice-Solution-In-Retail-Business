@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVC_Solutions_In_Retail.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20221123211736_Initial")]
+    [Migration("20221123213424_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
