@@ -20,14 +20,12 @@ namespace MVC_Solutions_In_Retail.Controllers
         }
 
         [HttpGet("GetWeatherForecast")]
-        //[Route("GetWeatherForecast")]
         public List<WeatherForecast> Get()
         {
             return _forecast.ReadForecasts();
         }
 
         [HttpGet("CreateWeatherForecast")]
-        //[Route("CreateWeatherForecast")]
         public string Create()
         {
             _forecast.MakeForecasts();
