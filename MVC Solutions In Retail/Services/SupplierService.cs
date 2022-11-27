@@ -1,31 +1,46 @@
-﻿using MVC_Solutions_In_Retail.Model;
+﻿using MVC_Solutions_In_Retail.Data;
+using MVC_Solutions_In_Retail.Model;
 
 namespace MVC_Solutions_In_Retail.Services
 {
     public class SupplierService : ISupplierService
     {
-        public void CreateSuppliers()
+
+        private MyDbContext _context;
+        private IProductService _productService;
+        
+
+        public SupplierService(MyDbContext context, IProductService products)
         {
-            List<Supplier> Suppliers = Enumerable.Range(1, 5).Select(index => new Supplier
+            _context = context;
+            _productService = products;
+        }
+
+        public void MakeSuppliers()
+        {
+            List<Supplier> suppliers = new List<Supplier>();
+
+            
+
+            
+
+            suppliers.Add(new Supplier
             {
-                
-            })
-            .ToList();
+                Id = suppliers.Count,
+                Products = _productService.ReadProducts()
+        }) ;
+
+           suppliers.ForEach(s => _context.Suppliers.Add(s));
+            _context.SaveChanges();
         }
 
-        public void DeleteSuppliers()
+       
+
+        public List<Supplier> ReadSuppliers()
         {
-            throw new NotImplementedException();
+            return _context.Suppliers.ToList();
         }
 
-        public void GetSuppliers()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateSuppliers()
-        {
-            throw new NotImplementedException();
-        }
+      
     }
 }

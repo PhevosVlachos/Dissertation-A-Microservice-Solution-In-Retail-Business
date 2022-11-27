@@ -23,7 +23,14 @@ var connectionString = builder.Configuration.GetConnectionString("MyConn");
 
 builder.Services.AddDbContext<MyDbContext>(options => 
         options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
+
+builder.Services.AddScoped<ISupplierService, SupplierService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IForecast, Forecast>();
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
