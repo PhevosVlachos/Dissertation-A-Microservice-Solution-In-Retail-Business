@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -27,45 +26,17 @@ namespace MVC_Solutions_In_Retail.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Suppliers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Suppliers", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "WeatherForecasts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    TemperatureC = table.Column<int>(type: "int", nullable: false),
-                    Summary = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WeatherForecasts", x => x.Id);
+                    table.PrimaryKey("PK_Suppliers", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -81,23 +52,11 @@ namespace MVC_Solutions_In_Retail.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Price = table.Column<double>(type: "double", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    MyCatalogueId = table.Column<int>(type: "int", nullable: true),
-                    OrderId = table.Column<int>(type: "int", nullable: true),
                     SupplierId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Products_MyCatalogue_MyCatalogueId",
-                        column: x => x.MyCatalogueId,
-                        principalTable: "MyCatalogue",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Products_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Products_Suppliers_SupplierId",
                         column: x => x.SupplierId,
@@ -106,15 +65,35 @@ namespace MVC_Solutions_In_Retail.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_MyCatalogueId",
-                table: "Products",
-                column: "MyCatalogueId");
+            migrationBuilder.CreateTable(
+                name: "MyCatalogueProduct",
+                columns: table => new
+                {
+                    CataloguesId = table.Column<int>(type: "int", nullable: false),
+                    MyProductsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MyCatalogueProduct", x => new { x.CataloguesId, x.MyProductsId });
+                    table.ForeignKey(
+                        name: "FK_MyCatalogueProduct_MyCatalogue_CataloguesId",
+                        column: x => x.CataloguesId,
+                        principalTable: "MyCatalogue",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MyCatalogueProduct_Products_MyProductsId",
+                        column: x => x.MyProductsId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_OrderId",
-                table: "Products",
-                column: "OrderId");
+                name: "IX_MyCatalogueProduct_MyProductsId",
+                table: "MyCatalogueProduct",
+                column: "MyProductsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_SupplierId",
@@ -125,16 +104,13 @@ namespace MVC_Solutions_In_Retail.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Products");
-
-            migrationBuilder.DropTable(
-                name: "WeatherForecasts");
+                name: "MyCatalogueProduct");
 
             migrationBuilder.DropTable(
                 name: "MyCatalogue");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Suppliers");

@@ -27,7 +27,7 @@ builder.Services.AddDbContext<MyDbContext>(options =>
 
 builder.Services.AddScoped<ISupplierService, SupplierService>();
 builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IForecast, Forecast>();
+
 
 
 

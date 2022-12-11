@@ -20,15 +20,16 @@ namespace MVC_Solutions_In_Retail.Services
         {
             List<Supplier> suppliers = new List<Supplier>();
 
-            
 
+            
             
 
             suppliers.Add(new Supplier
             {
                 Id = suppliers.Count,
+                Name = "ddd",
                 Products = _productService.ReadProducts()
-        }) ;
+            }); 
 
            suppliers.ForEach(s => _context.Suppliers.Add(s));
             _context.SaveChanges();

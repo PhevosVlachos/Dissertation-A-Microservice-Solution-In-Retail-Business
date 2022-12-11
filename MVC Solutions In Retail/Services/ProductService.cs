@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MVC_Solutions_In_Retail.Data;
+using MVC_Solutions_In_Retail.DTO;
 using MVC_Solutions_In_Retail.Model;
 using System.Xml.Linq;
 
@@ -21,9 +22,9 @@ namespace MVC_Solutions_In_Retail.Services
             List<Product> products = new List<Product>();
 
 
-            products.Add(new Product
+            products.Add(new Product()
             {
-                Id = products.Count,
+                
                 
                 Name =  "name",
                 
@@ -44,7 +45,16 @@ namespace MVC_Solutions_In_Retail.Services
 
         public List<Product> ReadProducts()
         {
-            return _context.Products.ToList();
+            return _context.Products.Include(p=> p.Supplier).ToList();
+        }
+
+        public void SetProductToSupplier(int productId, int supplierId)
+        {
+     
+            Product product = _context.Products.Find(productId);
+            Supplier supplier = _context.Suppliers.Find(supplierId);
+            product.Supplier = supplier;
+            _context.SaveChanges();
         }
     }
 }
