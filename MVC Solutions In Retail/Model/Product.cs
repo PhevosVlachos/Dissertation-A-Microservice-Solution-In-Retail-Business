@@ -17,8 +17,7 @@ namespace MVC_Solutions_In_Retail.Model
 
         public virtual Supplier ?Supplier { get; set; }
         
-        [JsonIgnore]
-        public virtual List<MyCatalogue> Catalogues { get; set; }
+        
 
     }
 }

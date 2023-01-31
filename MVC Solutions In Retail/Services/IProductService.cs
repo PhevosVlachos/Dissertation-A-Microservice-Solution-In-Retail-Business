@@ -7,6 +7,7 @@ namespace MVC_Solutions_In_Retail.Services
         public void MakeProducts();
 
         public List<Product> ReadProducts();
+
         void SetProductToSupplier(int id, int supplierId);
     }
 }

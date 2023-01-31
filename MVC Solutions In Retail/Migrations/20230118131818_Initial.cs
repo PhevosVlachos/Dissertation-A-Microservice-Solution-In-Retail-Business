@@ -13,19 +13,6 @@ namespace MVC_Solutions_In_Retail.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "MyCatalogue",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MyCatalogue", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Suppliers",
                 columns: table => new
                 {
@@ -37,6 +24,21 @@ namespace MVC_Solutions_In_Retail.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Suppliers", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -66,23 +68,18 @@ namespace MVC_Solutions_In_Retail.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "MyCatalogueProduct",
+                name: "MyCatalogue",
                 columns: table => new
                 {
-                    CataloguesId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     MyProductsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MyCatalogueProduct", x => new { x.CataloguesId, x.MyProductsId });
+                    table.PrimaryKey("PK_MyCatalogue", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MyCatalogueProduct_MyCatalogue_CataloguesId",
-                        column: x => x.CataloguesId,
-                        principalTable: "MyCatalogue",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_MyCatalogueProduct_Products_MyProductsId",
+                        name: "FK_MyCatalogue_Products_MyProductsId",
                         column: x => x.MyProductsId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -91,8 +88,8 @@ namespace MVC_Solutions_In_Retail.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MyCatalogueProduct_MyProductsId",
-                table: "MyCatalogueProduct",
+                name: "IX_MyCatalogue_MyProductsId",
+                table: "MyCatalogue",
                 column: "MyProductsId");
 
             migrationBuilder.CreateIndex(
@@ -104,10 +101,10 @@ namespace MVC_Solutions_In_Retail.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "MyCatalogueProduct");
+                name: "MyCatalogue");
 
             migrationBuilder.DropTable(
-                name: "MyCatalogue");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Products");

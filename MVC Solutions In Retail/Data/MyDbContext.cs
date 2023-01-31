@@ -13,9 +13,9 @@ namespace MVC_Solutions_In_Retail.Data
 
         public DbSet<Supplier> Suppliers { get; set; }
 
-       
-
        public DbSet<MyCatalogue> MyCatalogue { get; set; }
+
+        public DbSet<User> Users { get; set; }
 
        public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
         { }

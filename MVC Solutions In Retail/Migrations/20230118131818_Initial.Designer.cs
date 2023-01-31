@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVC_Solutions_In_Retail.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20221128142228_Initial")]
+    [Migration("20230118131818_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,7 +27,12 @@ namespace MVC_Solutions_In_Retail.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("MyProductsId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("MyProductsId");
 
                     b.ToTable("MyCatalogue");
                 });
@@ -77,19 +82,30 @@ namespace MVC_Solutions_In_Retail.Migrations
                     b.ToTable("Suppliers");
                 });
 
-            modelBuilder.Entity("MyCatalogueProduct", b =>
+            modelBuilder.Entity("MVC_Solutions_In_Retail.Model.User", b =>
                 {
-                    b.Property<int>("CataloguesId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("MyProductsId")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
-                    b.HasKey("CataloguesId", "MyProductsId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("MyProductsId");
+                    b.ToTable("Users");
+                });
 
-                    b.ToTable("MyCatalogueProduct");
+            modelBuilder.Entity("MVC_Solutions_In_Retail.Model.MyCatalogue", b =>
+                {
+                    b.HasOne("MVC_Solutions_In_Retail.Model.Product", "MyProducts")
+                        .WithMany()
+                        .HasForeignKey("MyProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MyProducts");
                 });
 
             modelBuilder.Entity("MVC_Solutions_In_Retail.Model.Product", b =>
@@ -99,21 +115,6 @@ namespace MVC_Solutions_In_Retail.Migrations
                         .HasForeignKey("SupplierId");
 
                     b.Navigation("Supplier");
-                });
-
-            modelBuilder.Entity("MyCatalogueProduct", b =>
-                {
-                    b.HasOne("MVC_Solutions_In_Retail.Model.MyCatalogue", null)
-                        .WithMany()
-                        .HasForeignKey("CataloguesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MVC_Solutions_In_Retail.Model.Product", null)
-                        .WithMany()
-                        .HasForeignKey("MyProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("MVC_Solutions_In_Retail.Model.Supplier", b =>
