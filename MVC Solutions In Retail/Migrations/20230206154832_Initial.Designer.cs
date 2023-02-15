@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MVC_Solutions_In_Retail.Migrations
 {
-    [DbContext(typeof(MyDbContext))]
-    [Migration("20230118131818_Initial")]
+    [DbContext(typeof(DBContext))]
+    [Migration("20230206154832_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

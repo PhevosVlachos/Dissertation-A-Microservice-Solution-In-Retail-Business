@@ -10,9 +10,9 @@ namespace MVC_Solutions_In_Retail.Services
 {
     public class ProductService : IProductService
     {
-        private MyDbContext _context;
+        private DBContext _context;
 
-        public ProductService(MyDbContext context)
+        public ProductService(DBContext context)
         {
             _context = context;
         }

@@ -5,7 +5,7 @@ namespace MVC_Solutions_In_Retail.Data
 {
 
 
-    public class MyDbContext :  DbContext
+    public class DBContext :  DbContext
     {
         
 
@@ -17,6 +17,7 @@ namespace MVC_Solutions_In_Retail.Data
 
         public DbSet<User> Users { get; set; }
 
-       public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
+       public DBContext(DbContextOptions<DBContext> options) : base(options)
         { }
-    }}
+    }
+}

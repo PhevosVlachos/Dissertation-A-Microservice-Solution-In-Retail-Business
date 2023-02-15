@@ -6,11 +6,11 @@ namespace MVC_Solutions_In_Retail.Services
     public class SupplierService : ISupplierService
     {
 
-        private MyDbContext _context;
+        private DBContext _context;
         private IProductService _productService;
         
 
-        public SupplierService(MyDbContext context, IProductService products)
+        public SupplierService(DBContext context, IProductService products)
         {
             _context = context;
             _productService = products;
