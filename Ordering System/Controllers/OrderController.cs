@@ -1,25 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Ordering_System.DTO;
 using Ordering_System.Services;
 
 namespace Ordering_System.Controllers
 {
+
+    [ApiController]
+    [Route("[controller]")]
     public class OrderController : Controller
     {
 
 
         private readonly ILogger<OrderController> _logger;
-        private readonly IOrderInterface _orders;
+        private readonly IOrderService _orders;
 
-        public OrderController(ILogger<OrderController> logger, IOrderInterface products)
+        public OrderController(ILogger<OrderController> logger, IOrderService orders)
         {
             _logger = logger;
-            _orders = products;
+            _orders = orders;
         }
 
       
 
         [HttpPost("CreateOrder")]
-        public string MakeOrder()
+        public string MakeOrder([FromBody] ProductDTO productDTO)
         {
             _orders.MakeOrder();
             return "Ok";

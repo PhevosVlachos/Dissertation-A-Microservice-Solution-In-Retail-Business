@@ -12,7 +12,7 @@
 
         public int Quantity { get; set; }
 
-
+       // public virtual Supplier? Supplier { get; set; }
 
     }
 }

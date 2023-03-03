@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Ordering_System.ClientServices;
 using Ordering_System.Data;
 using Ordering_System.Services;
 
@@ -16,9 +17,11 @@ var connectionString = builder.Configuration.GetConnectionString("MyConn");
 builder.Services.AddDbContext<OrderDbContext>(options =>
         options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-builder.Services.AddScoped<IOrderInterface, OrderService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
+ApiCaller.InitializeClient();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
