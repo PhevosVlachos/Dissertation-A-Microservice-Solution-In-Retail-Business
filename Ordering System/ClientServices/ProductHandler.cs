@@ -5,7 +5,7 @@ namespace Ordering_System.ClientServices
     public class ProductHandler
     {
 
-        public static async Task<List<Product>> GetProductsAsync()
+        public async Task<List<Product>> GetProductsAsync()
         {
             String path = "https://localhost:7066/company/GetProducts";
 
