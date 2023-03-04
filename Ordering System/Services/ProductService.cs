@@ -10,7 +10,7 @@ namespace Ordering_System.Services
         {
 
 
-            List<Product> products = ProductHandler.GetProductsAsync();
+            List<Product> products = ProductHandler.GetProductAsync<List<Product>>();
 
 
             return products;

@@ -5,20 +5,25 @@ namespace Ordering_System.ClientServices
     public class ProductHandler
     {
 
-        public async Task<List<Product>> GetProductsAsync()
+        public static T? GetProductAsync<T>()
         {
-            String path = "https://localhost:7066/company/GetProducts";
-
-            List<Product> products = null;
-
-            HttpResponseMessage response = await ApiCaller.ApiClient.GetAsync(path);
-            if (response.IsSuccessStatusCode)
+            string base_url = "https://localhost:7066/company";
+            string url = "GetProducts"; using (HttpClient client = new())
             {
-                products = await response.Content.ReadAsAsync<List<Product>>();
-            }
-            return products;
+                client.BaseAddress = new Uri(base_url);
+                var responseTask = client.GetAsync(url);
+                responseTask.Wait(); 
 
-        } 
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<T>();
+                    readTask.Wait();
+                    return readTask.Result;
+                }
+            }
+            return default;
+        }
 
     }
 }
