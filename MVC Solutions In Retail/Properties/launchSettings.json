@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "Catalog Microservice": {
+    "MVC_Solutions_In_Retail": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
