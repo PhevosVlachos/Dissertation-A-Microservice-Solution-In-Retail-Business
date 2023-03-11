@@ -7,7 +7,7 @@ namespace Ordering_System.ClientServices
 
         public static T? GetProductAsync<T>()
         {
-            string base_url = "https://localhost:7066/company";
+            string base_url = "https://localhost:7066/Product/";
             string url = "GetProducts"; using (HttpClient client = new())
             {
                 client.BaseAddress = new Uri(base_url);

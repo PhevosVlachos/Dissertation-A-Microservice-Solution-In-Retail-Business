@@ -7,7 +7,7 @@ namespace MVC_Solutions_In_Retail.Controllers
 {
 
     [ApiController]
-    [Route("company")]
+    [Route("[controller]")]
     public class ProductController : Controller
     {
         private readonly ILogger<ProductController> _logger;
