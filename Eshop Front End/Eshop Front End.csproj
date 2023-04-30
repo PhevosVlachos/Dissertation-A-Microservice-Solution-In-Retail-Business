@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Pages\ManageProducts.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Shared\NavMenu.razor~RF1c979e34.TMP" />
   </ItemGroup>
 
@@ -23,18 +19,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.10" PrivateAssets="all" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\ManageProducts.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\ManageProducts.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Pages\ManageProducts.razor" />
   </ItemGroup>
 
 </Project>
