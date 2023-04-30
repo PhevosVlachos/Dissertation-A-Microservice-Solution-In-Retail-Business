@@ -1,0 +1,101 @@
+﻿@page "/Browse"
+@inject HttpClient Http
+
+<PageTitle>Browse Products</PageTitle>
+
+<h3>In this page our product catalog is displayed.</h3>
+<p>In this page our product catalog is displayed.</p>
+
+@if (products == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Desc</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr>
+                    <td>@product.Id</td>
+                    <td>@product.Name</td>
+                    <td>@product.Description</td>
+                    <td>@product.Price</td>
+                    <td>@product.Quantity</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+
+
+
+@code {
+
+    private List<Product>? products { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+            products = await GetProductsAsync();
+
+       
+    }
+
+
+
+    public class Product
+    {
+
+        public int Id { get; set; }
+
+        public string Name { get; set; } = "";
+
+        public string Description { get; set; } = "";
+
+        public double Price { get; set; }
+
+        public int Quantity { get; set; }
+
+
+    }
+
+
+
+    public async Task<List<Product>> GetProductsAsync()
+    {
+        string base_url = "https:localhost:7066/Product/";
+        string url = "GetProducts"; using (Http)
+        {
+w            var responseTask = await Http.GetAsync(url);
+            responseTask.EnsureSuccessStatusCode();
+
+
+
+            var readTask = await responseTask.Content.ReadAsAsync<List<Product>>();
+
+            return readTask;
+
+        }
+    }
+
+
+
+
+
+}
+
+
+

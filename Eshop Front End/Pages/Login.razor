@@ -1,0 +1,183 @@
+﻿@page "/login"
+@inject NavigationManager NavigationManager
+@inject ILocalStorageService LocalStorage
+@inject HttpClient Http
+@inject AuthenticationStateProvider AuthStateProvider
+
+
+
+
+<h3>Login</h3>
+
+@*@if (loginSuccessfull == false)
+{
+    <p><em>Wrong username or password. Please try again.</em></p>
+
+}
+else
+{
+<P>Hello</P>    
+
+}*@
+
+<EditForm Model="localUser" OnSubmit="HandleLogin">
+    <div class="form-group">
+        <label for="username">Username</label>
+        <InputText id="username" @bind-Value="localUser.Username" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <InputText id="password" @bind-Value="localUser.Password" type="password" class=" form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+
+</EditForm>
+
+@if (apiUser == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Desc</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+
+            <tr>
+                <td>@apiUser.Id</td>
+                <td>@apiUser.Username</td>
+                <td>@apiUser.Password</td>
+            </tr>
+
+        
+        </tbody>
+    </table>
+}
+
+@if (!string.IsNullOrEmpty(Error))
+{
+    <p>@Error</p>
+}
+
+
+@code {
+    private Boolean? loginSuccessfull;
+    private Account apiUser { get; set; } 
+    private Account localUser = new();
+    string Error;
+
+    private async void HandleLogin()
+    {
+        Console.WriteLine("Log me In!");
+
+        await LocalStorage.SetItemAsync<String>("username", localUser.Username);
+        apiUser = await Http.GetFromJsonAsync<Account>($"https://localhost:7231/Account/GetAccountByUsername/{localUser.Username}");
+
+        await LocalStorage.SetItemAsync<String>("apiUsername", apiUser.Username);
+
+
+        if (localUser.Username == apiUser.Username)
+        {
+            
+            await AuthStateProvider.GetAuthenticationStateAsync();
+            NavigationManager.NavigateTo("");
+        } 
+        else
+        {
+
+            //loginSuccessfull = false;
+
+           
+            NavigationManager.NavigateTo("/login");
+
+
+
+          
+
+        }
+    }
+
+    private class Account
+    {
+
+        public int Id { get; set; }
+        public string Username { get; set; } = "";
+        public string Password { get; set; } = "";
+
+
+    }
+
+    //public class AuthenStateProvider : AuthenticationStateProvider
+    //{
+    //    private readonly HttpClient _httpClient;
+    //    private readonly ILocalStorageService _localStorage;
+
+
+    //    public AuthenStateProvider(HttpClient httpClient, ILocalStorageService localStorage)
+    //    {
+    //        _httpClient = httpClient;
+    //        _localStorage = localStorage;
+    //    }
+
+    //    public override async Task<AuthenticationState> GetAuthenticationStateAsync()
+    //    {
+    //        var state = new AuthenticationState(new ClaimsPrincipal());
+
+    //        string localUsername = await _localStorage.GetItemAsStringAsync("username");
+
+    //        Account? apiAccount = await _httpClient.GetFromJsonAsync<Account>("https://localhost:7231/Account/GetAccountByUsername/{localUsername}");
+
+    //        if (apiAccount != null)
+    //        {
+    //            var identity = new ClaimsIdentity(new[]
+    //            {
+    //                new Claim(ClaimTypes.Name, localUsername)
+    //    }
+    //                                , "test authentication type");
+
+    //            state = new AuthenticationState(new ClaimsPrincipal(identity));
+
+    //        }
+
+    //        NotifyAuthenticationStateChanged(Task.FromResult(state));
+
+    //        return state;
+
+          
+
+    //    }
+
+
+    //}
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+      
+
+        //try
+        //{
+        //   apiUser = await Http.GetFromJsonAsync<Account>("https://localhost:7231/Account/GetAccountByUsername/foivanos");
+        //}
+        //catch (Exception e)
+        //{ Error = e.Message; }
+
+
+    }
+
+
+
+
+}
+

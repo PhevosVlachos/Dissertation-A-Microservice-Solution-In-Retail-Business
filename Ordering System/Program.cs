@@ -21,7 +21,7 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
-ApiCaller.InitializeClient();
+//ApiCaller.InitializeClient();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -9,16 +9,16 @@ namespace Ordering_System.ClientServices
 {
     public class ApiCaller
     {
-        public static HttpClient ApiClient { get; set; } = new HttpClient();
+        //public static HttpClient ApiClient { get; set; } = new HttpClient();
 
-        public static void InitializeClient() {
+        //public static void InitializeClient() {
 
-            ApiClient.BaseAddress = new Uri("http://localhost:64195/");
-            ApiClient.DefaultRequestHeaders.Accept.Clear();
-            ApiClient.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
+        //    ApiClient.BaseAddress = new Uri("http://localhost:64195/");
+        //    ApiClient.DefaultRequestHeaders.Accept.Clear();
+        //    ApiClient.DefaultRequestHeaders.Accept.Add(
+        //        new MediaTypeWithQualityHeaderValue("application/json"));
 
-        }
+        //}
 
     }
 }

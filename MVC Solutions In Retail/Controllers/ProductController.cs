@@ -1,10 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using MVC_Solutions_In_Retail.DTO;
 using MVC_Solutions_In_Retail.Model;
 using MVC_Solutions_In_Retail.Services;
 
+
 namespace MVC_Solutions_In_Retail.Controllers
 {
+
+
 
     [ApiController]
     [Route("[controller]")]
@@ -19,25 +25,38 @@ namespace MVC_Solutions_In_Retail.Controllers
             _products = products;
         }
 
-        [HttpGet("GetProducts")]
-        public List<Product> GetProducts()
+
+
+        [HttpGet("GetAllProducts")]
+        public List<Product> GetAllProducts()
         {
-            return _products.ReadProducts();
+            return _products.GetAllProducts();
         }
 
-        [HttpGet("CreateProducts")]
-        public string CreateProducts()
+        [HttpPost("CreateProducts")]
+        public string CreateProducts([FromBody] ProductDTO productDTO)
         {
-            _products.MakeProducts();
-            return "Ok";
+            _products.CreateProducts(
+                productDTO.Name,
+                productDTO.Price);
+
+            return "Done";
         }
 
         [HttpPost("UpdateProduct")]
-        public void UpdateProducts([FromBody]ProductDTO productDTO)
+        public string UpdateProducts([FromBody] ProductDTO productDTO)
         {
-            _products.SetProductToSupplier(productDTO.Id, productDTO.SupplierId);
-           
+            _products.UpdateProducts(productDTO.Id, productDTO.Price);
 
+            return "Done";
+        }
+
+        [HttpPost("DeleteProduct")]
+        public string DeleteProducts([FromBody] ProductDTO productDTO)
+        {
+            _products.DeleteProducts(productDTO.Id);
+
+            return "Done";
         }
     }
 }

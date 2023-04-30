@@ -4,10 +4,19 @@ namespace MVC_Solutions_In_Retail.Services
 {
     public interface IProductService
     {
-        public void MakeProducts();
+        public void CreateProducts(string name, double price);
 
-        public List<Product> ReadProducts();
+        public List<Product> GetAllProducts();
 
-        void SetProductToSupplier(int id, int supplierId);
+        public void UpdateProducts(int productId, double price);
+
+        public void DeleteProducts(int productId);
+
+        public Product GetProductById(int productId);
+
+        public Product GetProductByName(string username);
+
+        
+        //void SetProductToSupplier(int id, int supplierId);
     }
 }

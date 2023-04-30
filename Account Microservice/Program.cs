@@ -1,3 +1,7 @@
+using Account_Microservice.Data;
+using Account_Microservice.Services;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,22 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var connectionString = builder.Configuration.GetConnectionString("MyConn");
+
+builder.Services.AddDbContext<AccountData>(options =>
+        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+builder.Services.AddScoped<IAccountService, AccountService>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "Policy1",
+                      policy =>
+                      {
+                          policy.WithOrigins("https://localhost:7103");
+                          //.AllowAnyMethod().AllowAnyHeader();
+                      });
+});
 
 var app = builder.Build();
 
@@ -17,6 +37,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("Policy1");
+
 
 app.UseAuthorization();
 

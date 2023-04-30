@@ -1,0 +1,189 @@
+﻿@page "/Browse"
+@using Eshop_Front_End.ClientServices;
+@using Eshop_Front_End.Models;
+@inject HttpClient Http
+@inject ILocalStorageService LocalStorage
+
+<PageTitle>Browse Products</PageTitle>
+
+<h3>In this page our product catalog is displayed.</h3>
+
+
+@if (products == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Desc</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr>
+                    <td>@product.Id</td>
+                    <td>@product.Name</td>
+                    <td>@product.Description</td>
+                    <td>@product.Price</td>
+                    <td>@product.Quantity</td>
+                    <td><button class="btn btn-primary" @onclick="(() => AddToCart(product.Id))"> Add To Cart</button></td>
+                </tr>
+            }
+
+
+
+
+        </tbody>
+    </table>
+
+}
+
+@if (!string.IsNullOrEmpty(Error))
+{
+    <p>@Error</p>
+}
+
+
+
+
+@code {
+    private List<Product>? products { get; set; }
+    private string Error { get; set; }
+    private List<CartProduct>? cart = new();
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+
+
+
+
+        try
+        {
+            products = await Http.GetFromJsonAsync<List<Product>>("https://localhost:7066/Product/GetAllProducts");
+        }
+        catch (Exception e)
+        {
+            Error = e.Message;
+        }
+
+
+    }
+
+
+
+    public class Product
+    {
+
+        public int Id { get; set; }
+
+        public string Name { get; set; } = "";
+
+        public string Description { get; set; } = "";
+
+        public double Price { get; set; }
+
+        public int Quantity { get; set; }
+
+
+    }
+
+    public class CartProduct
+    {
+
+        public int Id { get; set; }
+
+        public string Name { get; set; } = "";
+
+        public string Description { get; set; } = "";
+
+        public double Price { get; set; }
+
+        public int Quantity { get; set; }
+
+
+    }
+
+    public async void AddToCart(int productId)
+    {
+
+        Boolean existsInCart = false;
+
+        foreach (var p in cart)
+        {
+            if (p.Id == productId)
+            {
+                existsInCart = true;
+                p.Quantity += 1;
+
+
+            }
+        }
+
+
+        foreach (var product in products)
+        {
+            if (product.Id == productId && existsInCart == false)
+            {
+
+
+
+                cart.Add(new CartProduct()
+                {
+                    Id = product.Id,
+                    Name = product.Name, 
+                    Description = product.Description, 
+                    Price = product.Price, 
+                    Quantity = 1
+
+                });
+
+
+
+            }
+
+
+        }
+
+     
+
+        await LocalStorage.SetItemAsync<List<CartProduct>>("cart", cart);
+
+    }
+
+
+
+    //public async Task<List<Product>> GetProductsAsync()
+    //{
+    //    string base_url = "https:localhost:7066/Product/";
+    //    string url = "GetAllProducts"; using (Http)
+    //    {
+    //        //Http.BaseAddress = new Uri(base_url);
+    //        var responseTask = await Http.GetAsync(url);
+    //        responseTask.EnsureSuccessStatusCode();
+
+
+
+    //        var readTask = await responseTask.Content.ReadAsAsync<List<Product>>();
+
+    //        return readTask;
+
+    //        }
+        //    }
+
+
+
+
+
+}
+
