@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Account System", "Account M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering System", "Ordering System\Ordering System.csproj", "{9C645A48-AFA0-478F-8AA4-D76512179000}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stock System", "MVC Solutions In Retail\Stock System.csproj", "{60491D75-2232-4AE0-A4C7-CFED75A31DE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stock System", "Stock System\Stock System.csproj", "{C4F15562-B2B5-406B-AA0E-0AF48695F574}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{9C645A48-AFA0-478F-8AA4-D76512179000}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C645A48-AFA0-478F-8AA4-D76512179000}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C645A48-AFA0-478F-8AA4-D76512179000}.Release|Any CPU.Build.0 = Release|Any CPU
-		{60491D75-2232-4AE0-A4C7-CFED75A31DE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{60491D75-2232-4AE0-A4C7-CFED75A31DE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{60491D75-2232-4AE0-A4C7-CFED75A31DE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{60491D75-2232-4AE0-A4C7-CFED75A31DE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4F15562-B2B5-406B-AA0E-0AF48695F574}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4F15562-B2B5-406B-AA0E-0AF48695F574}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4F15562-B2B5-406B-AA0E-0AF48695F574}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4F15562-B2B5-406B-AA0E-0AF48695F574}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
