@@ -33,30 +33,62 @@ namespace MVC_Solutions_In_Retail.Controllers
             return _products.GetAllProducts();
         }
 
-        [HttpPost("CreateProducts")]
+        [HttpPost("AddProductsToStock")]
         public string CreateProducts([FromBody] ProductDTO productDTO)
         {
-            _products.CreateProducts(
+            _products.AddProductsToStock(
                 productDTO.Name,
-                productDTO.Price);
+                productDTO.Price,
+                productDTO.Quantity,
+                productDTO.Description
+     );
 
             return "Done";
         }
 
-        [HttpPost("UpdateProduct")]
-        public string UpdateProducts([FromBody] ProductDTO productDTO)
+        [HttpPost("UpdateProductsByName")]
+        public string UpdateProductsByName([FromBody] ProductDTO productDTO)
         {
-            _products.UpdateProducts(productDTO.Id, productDTO.Price);
+            _products.UpdateProductsByName(productDTO.Name, productDTO.Price, productDTO.Quantity, productDTO.Description);
 
             return "Done";
         }
 
-        [HttpPost("DeleteProduct")]
+        [HttpPost("DeleteProductById")]
         public string DeleteProducts([FromBody] ProductDTO productDTO)
         {
-            _products.DeleteProducts(productDTO.Id);
+            _products.DeleteProductsById(productDTO.Id);
 
             return "Done";
         }
+
+        [HttpPost("DeleteProductByName")]
+        public string DeleteProductsByName(ProductDTO productDTO)
+        {
+            _products.DeleteProductsByName(productDTO.Name, productDTO.Quantity);
+
+            return "Done";
+        }
+
+
+
+        [HttpPost("RemoveProductEntryByName")]
+        public string RemoveProductEntryByName(ProductDTO productDTO)
+        {
+            _products.RemoveProductEntryByName(productDTO.Name);
+
+            return "Done";
+        }
+
+
+        [HttpPost("RemoveProductEntryById")]
+        public string RemoveProductEntryById(ProductDTO productDTO)
+        {
+            _products.RemoveProductEntryById(productDTO.Id);
+
+            return "Done";
+        }
+
+
     }
 }

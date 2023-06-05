@@ -10,6 +10,8 @@ namespace Ordering_System.Data
 
         public DbSet<Order> Orders { get; set; }
 
+        public DbSet<OrderDetails> OrderDetails { get; set; }
+
         public OrderDbContext(DbContextOptions<OrderDbContext> options) : base(options)
         { }
     }

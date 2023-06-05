@@ -1,4 +1,4 @@
-﻿using Ordering_System.ClientServices;
+﻿using Ordering_System.Client;
 using Ordering_System.Model;
 using System.IO;
 
@@ -10,7 +10,7 @@ namespace Ordering_System.Services
         {
 
 
-            List<Product> products = ProductHandler.GetProductAsync<List<Product>>();
+            List<Product> products = ApiCaller.GetItemAsync<List<Product>>("https://localhost:7066/Product/", "GetAllProducts");
 
 
             return products;

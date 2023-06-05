@@ -1,7 +1,339 @@
 ﻿@page "/manageproducts"
+@inject HttpClient Http
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
 
-<h3>ManageProducts</h3>
+<PageTitle>Manage Products</PageTitle>
 
-@code {
+<h3>In this page we can manage our Eshop's products. We can add, delete or update our products</h3>
+
+
+@if (products == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr>
+                    <td>@product.Id</td>
+                    <td>@product.Name</td>
+                    <td>@product.Description</td>
+                    <td>@product.Price</td>
+                    <td>@product.Quantity</td>
+                    <td><button class="btn btn-primary" @onclick="(() => DeleteProductById(product.Id))"> Delete</button></td>
+                </tr>
+            }
+
+
+
+
+        </tbody>
+    </table>
+
+
 
 }
+
+
+<div>
+    <EditForm Model="inputProduct" 
+        >
+        <div class="form-group">
+            <label for="name">Name</label>
+            <InputText id="name" @bind-Value="inputProduct.Name" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <InputText id="description" @bind-Value="inputProduct.Description" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="price">Price</label>
+            <InputNumber id="price" @bind-Value="inputProduct.Price" class=" form-control" />
+        </div>
+        <div class="form-group">
+            <label for="price">Quantity</label>
+            <InputNumber min= "1" id="quantity" @bind-Value="inputProduct.Quantity" class=" form-control" />
+        </div>
+        <br/>
+        <div>
+        <button type="submit" @onclick="AddProductToCatalog" class="btn btn-primary">Add</button>
+        <button type="submit" @onclick="DeleteProductByName" class="btn btn-primary">Delete</button>
+        <button type="submit" @onclick="RemoveProductEntryByName" class="btn btn-primary">Delete All</button>
+        <button type="submit" @onclick="UpdateProductByName" class="btn btn-primary">Update</button>
+        </div>
+    </EditForm>
+</div>
+
+
+
+@if (!string.IsNullOrEmpty(Error))
+{
+    <p>@Error</p>
+}
+
+
+
+
+@code {
+    private List<Product>? products = new();
+    private string Error { get; set; }
+    private Product inputProduct = new();
+
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+
+        try
+        {
+            products = await Http.GetFromJsonAsync<List<Product>>("https://localhost:7066/Product/GetAllProducts");
+        }
+        catch (Exception e)
+        {
+            Error = e.Message;
+        }
+
+
+    }
+
+
+
+    public class Product
+    {
+
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Description { get; set; } = "";
+
+        public double Price { get; set; }
+
+        public int Quantity { get; set; }
+
+
+    }
+
+
+    private async void DeleteProductById(int productId)
+    {
+        var postBody = products.FirstOrDefault(p => p.Id == productId);
+
+        using var response = await Http.PostAsJsonAsync("https://localhost:7066/Product/DeleteProductById/", postBody);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            // set error message for display, log to console and return
+            Error = response.ReasonPhrase;
+            Console.WriteLine($"There was an error! {Error}");
+            return;
+        }
+
+        products.Clear();
+
+
+        try
+        {
+            products = await Http.GetFromJsonAsync<List<Product>>("https://localhost:7066/Product/GetAllProducts");
+        }
+        catch (Exception e)
+        {
+            Error = e.Message;
+        }
+
+        StateHasChanged();
+
+
+        NavigationManager.NavigateTo("/manageproducts");
+
+
+    }
+
+    private async void DeleteProductByName()
+    {
+
+        var postBody = inputProduct;
+
+        using var response = await Http.PostAsJsonAsync("https://localhost:7066/Product/DeleteProductByName", postBody);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            // set error message for display, log to console and return
+            Error = response.ReasonPhrase;
+            Console.WriteLine($"There was an error! {Error}");
+            return;
+        }
+
+        products.Clear();
+
+
+        try
+        {
+            products = await Http.GetFromJsonAsync<List<Product>>("https://localhost:7066/Product/GetAllProducts");
+        }
+        catch (Exception e)
+        {
+            Error = e.Message;
+        }
+
+        StateHasChanged();
+
+
+        NavigationManager.NavigateTo("/manageproducts");
+
+    }
+
+    private async void RemoveProductEntryByName()
+    {
+
+        var postBody = inputProduct;
+
+        using var response = await Http.PostAsJsonAsync("https://localhost:7066/Product/RemoveProductEntryByName", postBody);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            // set error message for display, log to console and return
+            Error = response.ReasonPhrase;
+            Console.WriteLine($"There was an error! {Error}");
+            return;
+        }
+
+        products.Clear();
+
+
+        try
+        {
+            products = await Http.GetFromJsonAsync<List<Product>>("https://localhost:7066/Product/GetAllProducts");
+        }
+        catch (Exception e)
+        {
+            Error = e.Message;
+        }
+
+        StateHasChanged();
+
+
+        NavigationManager.NavigateTo("/manageproducts");
+
+    }
+
+    private async void AddProductToCatalog()
+
+    {
+
+
+
+        var postBody = inputProduct;
+
+        using var response = await Http.PostAsJsonAsync("https://localhost:7066/Product/AddProductsToStock", postBody);
+
+
+        if (!response.IsSuccessStatusCode)
+        {
+            // set error message for display, log to console and return
+            Error = response.ReasonPhrase;
+            Console.WriteLine($"There was an error! {Error}");
+            return;
+        }
+
+        
+        products.Clear();
+        inputProduct.Quantity = 0;
+        
+
+
+        try
+        {
+            products = await Http.GetFromJsonAsync<List<Product>>("https://localhost:7066/Product/GetAllProducts");
+        }
+        catch (Exception e)
+        {
+            Error = e.Message;
+        }
+
+        StateHasChanged();
+
+
+        NavigationManager.NavigateTo("/manageproducts");
+
+    }
+
+    private async void UpdateProductByName()
+    {
+
+        var postBody = inputProduct;
+
+        using var response = await Http.PostAsJsonAsync("https://localhost:7066/Product/UpdateProductsByName", postBody);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            // set error message for display, log to console and return
+            Error = response.ReasonPhrase;
+            Console.WriteLine($"There was an error! {Error}");
+            return;
+        }
+
+        products.Clear();
+
+
+        try
+        {
+            products = await Http.GetFromJsonAsync<List<Product>>("https://localhost:7066/Product/GetAllProducts");
+        }
+        catch (Exception e)
+        {
+            Error = e.Message;
+        }
+
+        StateHasChanged();
+
+
+        NavigationManager.NavigateTo("/manageproducts");
+
+    }
+
+
+
+
+
+
+
+    //public async Task<List<Product>> GetProductsAsync()
+    //{
+    //    string base_url = "https:localhost:7066/Product/";
+    //    string url = "GetAllProducts"; using (Http)
+    //    {
+    //        //Http.BaseAddress = new Uri(base_url);
+    //        var responseTask = await Http.GetAsync(url);
+    //        responseTask.EnsureSuccessStatusCode();
+
+
+
+    //        var readTask = await responseTask.Content.ReadAsAsync<List<Product>>();
+
+    //        return readTask;
+
+    //        }
+        //    }
+
+
+
+
+
+}
+

@@ -1,7 +1,222 @@
 ﻿@page "/manageaccounts"
+@inject HttpClient Http;
+@inject NavigationManager NavigationManager
+@using Eshop_Front_End.Models;
 
-<h3>ManageAccounts</h3>
+<h3>Here we can create, delete or update our accounts</h3><br />
+
+
+
+
+@if (listOfaccounts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Creation Date</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var acc in listOfaccounts)
+            {
+                <tr>
+                    <td>@acc.Id</td>
+                    <td>@acc.Email</td>
+                    <td>@acc.Password</td>
+                    <td>@acc.DateCreated</td>
+                  @*  <td><button class="btn btn-primary" @onclick="(() => AddToCart(product.Id))"> Add To Cart</button></td>*@
+                </tr>
+            }
+
+
+
+
+        </tbody>
+    </table>
+
+}
+
+<br /><h4>Admin Form</h4>
+<div>
+    <EditForm Model="inputAccount">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <InputText id="email" @bind-Value="inputAccount.Email" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="newEmail">New Email</label>
+            <InputText id="newEmail" @bind-Value="inputAccount.NewEmail" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <InputText id="password" type="password" @bind-Value="inputAccount.Password" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="newPassword">New Password</label>
+            <InputText id="newPassword" type="password" @bind-Value="inputAccount.NewPassword" class="form-control" />
+        </div>
+        <br />
+        <div>
+            <button type="submit" @onclick="CreateAccount" class="btn btn-primary">Create</button>
+            <button type="submit" @onclick="DeleteAccountByName" class="btn btn-primary">Delete</button>
+            <button type="submit" @onclick="UpdateAccountByName" class="btn btn-primary">Update</button>
+        </div>
+    </EditForm>
+</div>
+
+@if (!string.IsNullOrEmpty(Error))
+{
+    <p>@Error</p>
+}
 
 @code {
+    private List<AccountModel> listOfaccounts { get; set; }
+    private string Error;
+    private AccountModel inputAccount = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+
+
+
+
+        try
+        {
+            listOfaccounts = await Http.GetFromJsonAsync<List<AccountModel>>("https://localhost:7231/Account/GetAllAccounts");
+        }
+        catch (Exception e)
+        {
+            Error = e.Message;
+        }
+
+
+    }
+
+    private async void CreateAccount()
+
+    {
+
+
+
+        var postBody = inputAccount;
+
+        using var response = await Http.PostAsJsonAsync("https://localhost:7231/Account/CreateAccount", postBody);
+
+
+        if (!response.IsSuccessStatusCode)
+        {
+            // set error message for display, log to console and return
+            Error = response.ReasonPhrase;
+            Console.WriteLine($"There was an error! {Error}");
+            return;
+        }
+
+
+        listOfaccounts.Clear();
+       
+
+
+
+        try
+        {
+            listOfaccounts = await Http.GetFromJsonAsync<List<AccountModel>>("https://localhost:7231/Account/GetAllAccounts");
+        }
+        catch (Exception e)
+        {
+            Error = e.Message;
+        }
+
+        StateHasChanged();
+
+
+        NavigationManager.NavigateTo("/manageaccounts");
+
+    }
+
+    private async void DeleteAccountByName()
+
+    {
+        var postBody = inputAccount;
+
+        using var response = await Http.PostAsJsonAsync("https://localhost:7231/Account/DeleteAccountByEmail", postBody);
+
+
+        if (!response.IsSuccessStatusCode)
+        {
+            // set error message for display, log to console and return
+            Error = response.ReasonPhrase;
+            Console.WriteLine($"There was an error! {Error}");
+            return;
+        }
+
+
+        listOfaccounts.Clear();
+
+
+
+
+        try
+        {
+            listOfaccounts = await Http.GetFromJsonAsync<List<AccountModel>>("https://localhost:7231/Account/GetAllAccounts");
+        }
+        catch (Exception e)
+        {
+            Error = e.Message;
+        }
+
+        StateHasChanged();
+
+
+        NavigationManager.NavigateTo("/manageaccounts");
+
+    }
+
+    private async void UpdateAccountByName()
+
+    {
+        var postBody = inputAccount;
+
+        using var response = await Http.PostAsJsonAsync("https://localhost:7231/Account/UpdateAccountByName", postBody);
+
+
+        if (!response.IsSuccessStatusCode)
+        {
+            // set error message for display, log to console and return
+            Error = response.ReasonPhrase;
+            Console.WriteLine($"There was an error! {Error}");
+            return;
+        }
+
+
+        listOfaccounts.Clear();
+
+
+
+
+        try
+        {
+            listOfaccounts = await Http.GetFromJsonAsync<List<AccountModel>>("https://localhost:7231/Account/GetAllAccounts");
+        }
+        catch (Exception e)
+        {
+            Error = e.Message;
+        }
+
+        StateHasChanged();
+
+
+        NavigationManager.NavigateTo("/manageaccounts");
+
+    }
 
 }

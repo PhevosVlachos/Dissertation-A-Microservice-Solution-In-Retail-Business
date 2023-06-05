@@ -1,14 +1,15 @@
 ﻿
 
-namespace Ordering_System.ClientServices
+namespace Ordering_System.Client
 {
-    public class ProductHandler
+    public class ApiCaller
     {
 
-        public static T? GetProductAsync<T>()
+        public static T? GetItemAsync<T>(string base_url, string url)
         {
-            string base_url = "https://localhost:7066/Product/";
-            string url = "GetProducts"; using (HttpClient client = new())
+            
+            using (HttpClient client = new())
+
             {
                 client.BaseAddress = new Uri(base_url);
                 var responseTask = client.GetAsync(url);

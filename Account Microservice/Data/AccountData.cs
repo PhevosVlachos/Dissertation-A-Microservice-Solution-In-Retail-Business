@@ -9,9 +9,7 @@ namespace Account_Microservice.Data
 
         public DbSet<Account> Accounts { get; set; }
 
-
-
-
+        public DbSet<Privileges> Privileges { get; set; }
 
         public AccountData(DbContextOptions<AccountData> options) : base(options)
         { }
